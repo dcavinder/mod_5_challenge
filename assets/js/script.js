@@ -1,8 +1,6 @@
-var currentDay = moment().format("[Today's date is: ]'MMMM Do YYYY, h:mm:ss a'");
+var currentDay = moment().format("[Today's date is: ]MMMM Do YYYY, h:mm:ss a");
 $("#currentDay").text(currentDay)
-
-var timeBlocks = document.querySelector(".container")
-
+var timeSlotContainer = document.querySelector(".container")
 var timeSlots = [
     {
         hour: '7',
@@ -89,3 +87,28 @@ var timeSlots = [
         task: ''
     }
 ]
+
+timeSlots.forEach(schedulePopulate);
+
+function schedulePopulate(timeSlot) {
+    console.log(timeSlot);
+    var scheduleRow = document.createElement('div');
+    scheduleRow.classList.add("row");
+    $(".container").append(scheduleRow); 
+
+    var hourSlot = document.createElement('p');
+    hourSlot.classList.add("hour", "col-2");
+    hourSlot.innerText = timeSlot.hour + timeSlot.period;
+    scheduleRow.append(hourSlot);
+
+    var toDoForm = document.createElement('form');
+    var toDoEntry = document.createElement('input');
+    toDoEntry.setAttribute("type", "text")
+    toDoEntry.setAttribute("id", "task-" + timeSlot.hour)
+    toDoEntry.setAttribute("name", "task")
+
+    toDoForm.append(toDoEntry);
+    scheduleRow.append(toDoForm);
+}
+
+
