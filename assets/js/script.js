@@ -109,6 +109,10 @@ function schedulePopulate(timeSlot) {
 
     toDoForm.append(toDoEntry);
     scheduleRow.append(toDoForm);
+
+    var saveBtn = document.createElement('i');
+    saveBtn.classList.add("far", "fa-save","saveBtn","col-1"); 
+    scheduleRow.append(saveBtn);
 }
 
 
