@@ -130,20 +130,10 @@ function schedulePopulate(item) {
     saveSection.addEventListener('click', function(event){
         var newToDo = $(event.target).closest("p").prev().find("input").val()
         item.task = newToDo; 
-        localStorage.setItem("timeSlots", JSON.stringify(timeSlots));
+        localStorage.setItem(item.time, item.task);
     })
+    var taskList = document.createElement("p");
+    toDoForm.append(taskList);
+    taskList.innerText = localStorage.getItem(item.time) ||'';
+
 }
-
-function scheduleFill() {
-    var stored = JSON.parse(localStorage.getItem("timeSlots"))
-    console.log(stored);
-    for (var i = 0; i < stored.length; i++) {
-        var time = stored[i].time
-        var savedToDo = stored[i].task;
-        $(`#task-${time}`).val(savedToDo);
-        console.log(savedToDo);
-    }
-} 
-scheduleFill()
-
-
