@@ -90,29 +90,60 @@ var timeSlots = [
 
 timeSlots.forEach(schedulePopulate);
 
-function schedulePopulate(timeSlot) {
-    console.log(timeSlot);
-    var scheduleRow = document.createElement('div');
+function schedulePopulate(item) {
+    var scheduleRow = document.createElement("div");
     scheduleRow.classList.add("row");
     $(".container").append(scheduleRow); 
 
     var hourSlot = document.createElement('p');
     hourSlot.classList.add("hour", "col-2");
-    hourSlot.innerText = timeSlot.hour + timeSlot.period;
+    hourSlot.innerText = item.hour + item.period;
     scheduleRow.append(hourSlot);
 
-    var toDoForm = document.createElement('form');
-    var toDoEntry = document.createElement('input');
-    toDoEntry.setAttribute("type", "text")
-    toDoEntry.setAttribute("id", "task-" + timeSlot.hour)
-    toDoEntry.setAttribute("name", "task")
 
+    var toDoForm = document.createElement("form");
+    var toDoEntry = document.createElement("input");
+    toDoEntry.setAttribute("type", "text")
+    toDoEntry.setAttribute("id", "task-" + item.hour)
+    toDoEntry.setAttribute("name", "task")
     toDoForm.append(toDoEntry);
     scheduleRow.append(toDoForm);
 
-    var saveBtn = document.createElement('i');
-    saveBtn.classList.add("far", "fa-save","saveBtn","col-1"); 
-    scheduleRow.append(saveBtn);
+    if (item.time === moment().format("HH")) {
+        toDoForm.classList.add("present","col-9");
+
+    } else if (item.time > moment().format("HH")) {
+        toDoForm.classList.add("future","col-9");
+
+    } else {
+        toDoForm.classList.add("past","col-9");
+    }
+
+    var saveSection = document.createElement('p'); 
+    saveSection.classList.add("saveBtn","col-1");
+    scheduleRow.append(saveSection);
+
+    var save = document.createElement('i'); 
+    save.classList.add("fa", "fa-save");
+    saveSection.append(save);
+
+    saveSection.addEventListener('click', function(event){
+        var newToDo = $(event.target).closest("p").prev().find("input").val()
+        item.task = newToDo; 
+        localStorage.setItem("timeSlots", JSON.stringify(timeSlots));
+    })
 }
+
+function scheduleFill() {
+    var stored = JSON.parse(localStorage.getItem("timeSlots"))
+    console.log(stored);
+    for (var i = 0; i < stored.length; i++) {
+        var time = stored[i].time
+        var savedToDo = stored[i].task;
+        $(`#task-${time}`).val(savedToDo);
+        console.log(savedToDo);
+    }
+} 
+scheduleFill()
 
 
